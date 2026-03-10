@@ -65,7 +65,7 @@
     }
 
     get tip() {
-      return this.dataset.tip || "Fill style. Click to change";
+      return this.dataset.tip || "Style de remplissage. Cliquez pour modifier.";
     }
   }
 
