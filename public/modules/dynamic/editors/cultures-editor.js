@@ -1,7 +1,7 @@
 const $body = insertEditorHtml();
 addListeners();
 
-const cultureTypes = ["Generic", "River", "Lake", "Naval", "Nomadic", "Hunting", "Highland"];
+const cultureTypes = ["Générique", "Rivière", "Lac", "Navale", "Nomade", "Chasseurs", "Montagnard"]; // Not sure about the translation, espacially for "River" and "Lake", I don't know what these cultures are 
 
 export function open() {
   closeDialogs("#culturesEditor, .stable");
@@ -14,7 +14,7 @@ export function open() {
   refreshCulturesEditor();
 
   $("#culturesEditor").dialog({
-    title: "Cultures Editor",
+    title: "Editeurs des cultures",
     resizable: false,
     close: closeCulturesEditor,
     position: {my: "right top", at: "right-10 top+10", of: "svg"}
@@ -25,44 +25,44 @@ export function open() {
 function insertEditorHtml() {
   const editorHtml = /* html */ `<div id="culturesEditor" class="dialog stable">
     <div id="culturesHeader" class="header" style="grid-template-columns: 10em 7em 9em 4em 8em 5em 7em 8em">
-      <div data-tip="Click to sort by culture name" class="sortable alphabetically" data-sortby="name">Culture&nbsp;</div>
-      <div data-tip="Click to sort by type" class="sortable alphabetically" data-sortby="type">Type&nbsp;</div>
-      <div data-tip="Click to sort by culture namesbase" class="sortable" data-sortby="base">Namesbase&nbsp;</div>
-      <div data-tip="Click to sort by culture cells count" class="sortable hide" data-sortby="cells">Cells&nbsp;</div>
-      <div data-tip="Click to sort by expansionism" class="sortable hide" data-sortby="expansionism">Expansion&nbsp;</div>
-      <div data-tip="Click to sort by culture area" class="sortable hide" data-sortby="area">Area&nbsp;</div>
-      <div data-tip="Click to sort by culture population" class="sortable hide icon-sort-number-down" data-sortby="population">Population&nbsp;</div>
-      <div data-tip="Click to sort by culture emblems shape" class="sortable alphabetically hide" data-sortby="emblems">Emblems&nbsp;</div>
+      <div data-tip="Cliquez pour trier par nom de culture" class="sortable alphabetically" data-sortby="name">Culture&nbsp;</div>
+      <div data-tip="Cliquez pour trier par type" class="sortable alphabetically" data-sortby="type">Type&nbsp;</div>
+      <div data-tip="Cliquez pour trier par base de noms des culture" class="sortable" data-sortby="base">Base de nom&nbsp;</div> /* If too long "Base de nom" can be replace by "Base" */
+      <div data-tip="Cliquez pour trier par nombre de cellules des culture" class="sortable hide" data-sortby="cells">Cellule&nbsp;</div>
+      <div data-tip="Cliquez pour trier par expansionnisme" class="sortable hide" data-sortby="expansionism">Expansion&nbsp;</div>
+      <div data-tip="Cliquez pour trier par superficie des cultures" class="sortable hide" data-sortby="area">Superficie&nbsp;</div> /* If too long "Superficie" could be replace by "Aire" ("Area" usally for geometrical shape) or "Taille" ("Size") */
+      <div data-tip="Cliquez pour trier par population des culture" class="sortable hide icon-sort-number-down" data-sortby="population">Population&nbsp;</div>
+      <div data-tip="Cliquez pour trier par forme des emblèmes des cultures" class="sortable alphabetically hide" data-sortby="emblems">Emblèmes&nbsp;</div>
     </div>
     <div id="culturesBody" class="table" data-type="absolute"></div>
 
     <div id="culturesFooter" class="totalLine">
-      <div data-tip="Cultures number" style="margin-left: 12px">Cultures:&nbsp;<span id="culturesFooterCultures">0</span></div>
-      <div data-tip="Total land cells number" style="margin-left: 12px">Cells:&nbsp;<span id="culturesFooterCells">0</span></div>
-      <div data-tip="Total land area" style="margin-left: 12px">Land Area:&nbsp;<span id="culturesFooterArea">0</span></div>
-      <div data-tip="Total population" style="margin-left: 12px">Population:&nbsp;<span id="culturesFooterPopulation">0</span></div>
+      <div data-tip="Nombre de cultures" style="margin-left: 12px">Cultures&nbsp;:&nbsp;<span id="culturesFooterCultures">0</span></div>
+      <div data-tip="Nombre total de cellule de territoire" style="margin-left: 12px">Cellules&nbsp;:&nbsp;<span id="culturesFooterCells">0</span></div>
+      <div data-tip="Aire total du territoire" style="margin-left: 12px">Surface du territoire&nbsp;:&nbsp;<span id="culturesFooterArea">0</span></div>
+      <div data-tip="Population total" style="margin-left: 12px">Population&nbsp;:&nbsp;<span id="culturesFooterPopulation">0</span></div>
     </div>
 
     <div id="culturesBottom">
-      <button id="culturesEditorRefresh" data-tip="Refresh the Editor" class="icon-cw"></button>
-      <button id="culturesEditStyle" data-tip="Edit cultures style in Style Editor" class="icon-adjust"></button>
-      <button id="culturesLegend" data-tip="Toggle Legend box" class="icon-list-bullet"></button>
-      <button id="culturesPercentage" data-tip="Toggle percentage / absolute values display mode" class="icon-percent"></button>
-      <button id="culturesHeirarchy" data-tip="Show cultures hierarchy tree" class="icon-sitemap"></button>
-      <button id="culturesManually" data-tip="Manually re-assign cultures" class="icon-brush"></button>
+      <button id="culturesEditorRefresh" data-tip="Rafraîchi l'Editeur" class="icon-cw"></button>
+      <button id="culturesEditStyle" data-tip="Edite le style des culture dans Editeur de Style" class="icon-adjust"></button>
+      <button id="culturesLegend" data-tip="Affiche/cache la légende" class="icon-list-bullet"></button>
+      <button id="culturesPercentage" data-tip="Bascule le mode d'affichage : pourcentage/valeurs absolues" class="icon-percent"></button>
+      <button id="culturesHeirarchy" data-tip="Montre l'arbre généalogique des cultures" class="icon-sitemap"></button>
+      <button id="culturesManually" data-tip="Réassigner manuellement les cultures" class="icon-brush"></button>
       <div id="culturesManuallyButtons" style="display: none">
-        <div data-tip="Change brush size. Shortcut: + to increase; – to decrease" style="margin-block: 0.3em;">
-          <slider-input id="culturesBrush" min="1" max="100" value="15">Brush size:</slider-input>
+        <div data-tip="Changer la taille du crayon. Raccourci: + pour augmenter ; – pour réduire" style="margin-block: 0.3em;">
+          <slider-input id="culturesBrush" min="1" max="100" value="15">Taille crayon:</slider-input>
         </div>
         <button id="culturesManuallyApply" data-tip="Apply assignment" class="icon-check"></button>
         <button id="culturesManuallyCancel" data-tip="Cancel assignment" class="icon-cancel"></button>
       </div>
-      <button id="culturesEditNamesBase" data-tip="Edit a database used for names generation" class="icon-font"></button>
-      <button id="culturesAdd" data-tip="Add a new culture. Hold Shift to add multiple" class="icon-plus"></button>
-      <button id="culturesExport" data-tip="Download cultures-related data" class="icon-download"></button>
-      <button id="culturesImport" data-tip="Upload cultures-related data" class="icon-upload"></button>
-      <button id="culturesRecalculate" data-tip="Recalculate cultures based on current values of growth-related attributes" class="icon-retweet"></button>
-      <span data-tip="Allow culture centers, expansion and type changes to take an immediate effect">
+      <button id="culturesEditNamesBase" data-tip="Editer une base de données utilisées pour la génération de nom" class="icon-font"></button>
+      <button id="culturesAdd" data-tip="Ajoute une nouvelle culture. Maintenir Maj pour en ajouter plusieurs" class="icon-plus"></button>
+      <button id="culturesExport" data-tip="Exporter les données relatives aux cultures" class="icon-download"></button>
+      <button id="culturesImport" data-tip="Importer les données relatives aux cultures" class="icon-upload"></button>
+      <button id="culturesRecalculate" data-tip="Recalculer les cultures en fonction des valeurs actuelles des attributs liés à la croissance." class="icon-retweet"></button>
+      <span data-tip="Permettre aux centres culturels, aux expension et aux changements de type de prendre effet immédiatement.">
         <input id="culturesAutoChange" class="checkbox" type="checkbox" />
         <label for="culturesAutoChange" class="checkbox-label"><i>auto-apply changes</i></label>
       </span>
@@ -130,9 +130,9 @@ function culturesEditorAddLines() {
     const rural = c.rural * populationRate;
     const urban = c.urban * populationRate * urbanization;
     const population = rn(rural + urban);
-    const populationTip = `Total population: ${si(population)}. Rural population: ${si(rural)}. Urban population: ${si(
+    const populationTip = `Population totale : ${si(population)}. Population rurale : ${si(rural)}. Population urbaine : ${si(
       urban
-    )}. Click to edit`;
+    )}. Cliquez pour éditer`;
     totalArea += area;
     totalPopulation += population;
 
